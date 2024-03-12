@@ -44,7 +44,7 @@ function DropDown() {
   const fetchRoomSchedule = async () => {
     try {
       // Hier die URL für die Backend-Anfrage einfügen
-      const response = await fetch(`API_URL/${room}`); // Beispiel-URL, ersetzen Sie 'API_URL' durch Ihre tatsächliche Backend-URL
+      const response = await fetch(`API_URL${room}`); // Beispiel-URL, ersetzen Sie 'API_URL' durch Ihre tatsächliche Backend-URL
       const data = await response.json();
       setRoomSchedule(data.schedule); // Annahme: Das Backend sendet den Raumzeitplan als JSON-Daten mit dem Schlüssel 'schedule'
     } catch (error) {

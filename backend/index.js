@@ -13,13 +13,13 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use(
-    cors({
-        origin: 'localhost:3000',
-        methods:['GET', 'POST', 'DELETE'],
-        allowedHeaders: ['Content-Type'],
-    })
-);
+// app.use(
+//     cors({
+//         origin: 'localhost:3000',
+//         methods:['GET', 'POST', 'DELETE'],
+//         allowedHeaders: ['Content-Type'],
+//     })
+// );
 
 app.get('/', (req, res) => {
     console.log(req);

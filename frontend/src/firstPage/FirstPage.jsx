@@ -13,11 +13,9 @@ function FirstPage() {
 
     return (
         <div className='firstpage'>
-            <div>
                 <header>
                     <Header />
                 </header>
-            </div>
             <div className="content">
                 <DropDown 
                     id="1" 

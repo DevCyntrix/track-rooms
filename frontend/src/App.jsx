@@ -1,8 +1,8 @@
 import { useState } from "react";
 import './App.css';
 
-import FirstPage from './firstPage/FirstPage';
-
+import FirstPage from "./firstPage/FirstPage";
+import './App.css'
 
 
 //push these nuts

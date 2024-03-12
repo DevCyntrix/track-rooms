@@ -1,32 +1,23 @@
-/* Dropdown Button */
-.dropbtn {
-    color: black;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    background-color:#F7F8F8 ;
-  }
-  
-  /* Dropdown Inhalt (versteckt standardmäßig) */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    min-width: 160px;
-  }
-  
-  /* Links innerhalb des Dropdowns */
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  /* Ändere die Hintergrundfarbe beim Hovern */
-  .dropdown-content a:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Zeige Dropdown-Menü, wenn der Button darauf klickt */
-  .show {display: block;}
-  
+.container {
+  margin: 50px auto;
+  text-align: center;
+}
+
+.dropdown {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+label {
+  display: none; /* Titel ausblenden */
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 5px;
+  background-color: #f2f2f2; /* Hellgraue Hintergrundfarbe */
+  border: none; /* Kein Rahmen */
+  border-radius: 5px; /* Abgerundete Ecken */
+}

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import './DropDown.css';
 
 function DropDown() {
@@ -7,10 +9,25 @@ function DropDown() {
   const [room, setRoom] = useState('room1');
   const [roomSchedule, setRoomSchedule] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedStartTime, setSelectedStartTime] = useState('');
   const [selectedEndTime, setSelectedEndTime] = useState('');
   const [timeOptions, setTimeOptions] = useState([]);
   const [bookingConfirmation, setBookingConfirmation] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [timeSelectionText, setTimeSelectionText] = useState('Wählen Sie die Startzeit');
+
+  // Helper function to generate time options from 8:00 to 20:00 in 15-minute intervals
+  const generateTimeOptions = () => {
+    const times = [];
+    for (let hour = 8; hour <= 20; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        times.push(timeString);
+      }
+    }
+    return times;
+  };
 
   const handleBuildingChange = (event) => {
     setBuilding(event.target.value);
@@ -27,21 +44,30 @@ function DropDown() {
     setRoom(event.target.value);
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setIsButtonDisabled(false);
+  };
+
   const handleTimeSelection = (time) => {
     if (!selectedStartTime) {
       setSelectedStartTime(time);
+      setTimeSelectionText('Wählen Sie die Endzeit');
     } else {
       setSelectedEndTime(time);
+      setTimeSelectionText('');
     }
   };
 
   const handleFinalBooking = () => {
-    if (selectedStartTime && selectedEndTime) {
-      const confirmationMessage = `Raum ${room} von ${selectedStartTime} bis ${selectedEndTime} wurde erfolgreich gebucht.`;
+    if (selectedDate && selectedStartTime && selectedEndTime) {
+      const confirmationMessage = `Raum ${room} am ${selectedDate.toLocaleDateString()} von ${selectedStartTime} bis ${selectedEndTime} wurde erfolgreich gebucht.`;
       setBookingConfirmation(confirmationMessage);
+      setSelectedDate(null);
       setSelectedStartTime('');
       setSelectedEndTime('');
       setShowPopup(false);
+      setIsButtonDisabled(true);
     }
   };
 
@@ -77,13 +103,14 @@ function DropDown() {
   }, [room]);
 
   useEffect(() => {
-    const availableTimes = ['09:00', '10:00', '11:00', '12:00'];
+    const availableTimes = generateTimeOptions();
     setTimeOptions(availableTimes);
   }, [roomSchedule]);
 
   useEffect(() => {
     if (showPopup) {
-      setBookingConfirmation(''); // Zurücksetzen der Buchungsbestätigung, wenn das Popup geöffnet wird
+      setBookingConfirmation('');
+      setTimeSelectionText('Wählen Sie die Startzeit'); // Reset time selection text when popup is opened
     }
   }, [showPopup]);
 
@@ -115,24 +142,34 @@ function DropDown() {
           ))}
         </select>
       </div>
+      <div className="dropdown">
+        <label>Datum:</label>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="dd/MM/yyyy"
+          className="date-picker"
+        />
+      </div>
       <div>
         <h3>{building === 'building1' ? 'Gebäude 6A' : 'Gebäude 6B'} {room}</h3>
         <p>{roomSchedule}</p>
-        <button onClick={() => setShowPopup(true)}>Buchen</button>
+        <button onClick={() => setShowPopup(true)} disabled={isButtonDisabled}>Buchen</button>
         {bookingConfirmation && <p>{bookingConfirmation}</p>}
       </div>
       {showPopup && (
         <div className="popup">
-          {selectedStartTime && selectedEndTime ? (
+          {selectedDate && selectedStartTime && selectedEndTime ? (
             <>
               <h3>Bestätigen Sie Ihre Buchung für {room}</h3>
+              <p>Datum: {selectedDate.toLocaleDateString()}</p>
               <p>Startzeit: {selectedStartTime}</p>
               <p>Endzeit: {selectedEndTime}</p>
               <button onClick={handleFinalBooking}>Abschließend buchen</button>
             </>
           ) : (
             <>
-              <h3>{selectedStartTime ? 'Wählen Sie eine Endzeit' : 'Wählen Sie eine Startzeit'} für {room}</h3>
+              <h3>{timeSelectionText} für {room}</h3>
               <div className="time-options">
                 {timeOptions.map((timeOption) => (
                   <button key={timeOption} onClick={() => handleTimeSelection(timeOption)}>{timeOption}</button>

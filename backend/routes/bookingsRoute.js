@@ -38,6 +38,18 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Get all bookings for a room
+router.get('/:roomId', async (req, res) => {
+    try {
+        const { roomId } = req.params;
+        const bookings = await Booking.find({roomId: roomId});
+        return res.status(200).json(bookings);
+    }  catch (err) {
+        console.log(err.message);
+        res.status(500).send({ message: err.message })
+    }
+});
+
 // Delete a booking
 router.delete('/:id', async (req, res) => {
     try {

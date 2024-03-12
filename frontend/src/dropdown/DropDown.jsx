@@ -5,24 +5,46 @@ function DropDown() {
   const [building, setBuilding] = useState('building1');
   const [floor, setFloor] = useState('floor1');
   const [room, setRoom] = useState('room1');
-  const [roomSchedule, setRoomSchedule] = useState(''); // Zustand für den Raumzeitplan
+  const [roomSchedule, setRoomSchedule] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedStartTime, setSelectedStartTime] = useState('');
+  const [selectedEndTime, setSelectedEndTime] = useState('');
+  const [timeOptions, setTimeOptions] = useState([]);
+  const [bookingConfirmation, setBookingConfirmation] = useState('');
 
   const handleBuildingChange = (event) => {
     setBuilding(event.target.value);
-    setFloor('floor1'); // Reset floor selection
-    setRoom('room1'); // Reset room selection
+    setFloor('floor1');
+    setRoom('room1');
   };
 
   const handleFloorChange = (event) => {
     setFloor(event.target.value);
-    setRoom('room1'); // Reset room selection
+    setRoom('room1');
   };
 
   const handleRoomChange = (event) => {
     setRoom(event.target.value);
   };
 
-  // Define room options based on building and floor
+  const handleTimeSelection = (time) => {
+    if (!selectedStartTime) {
+      setSelectedStartTime(time);
+    } else {
+      setSelectedEndTime(time);
+    }
+  };
+
+  const handleFinalBooking = () => {
+    if (selectedStartTime && selectedEndTime) {
+      const confirmationMessage = `Raum ${room} von ${selectedStartTime} bis ${selectedEndTime} wurde erfolgreich gebucht.`;
+      setBookingConfirmation(confirmationMessage);
+      setSelectedStartTime('');
+      setSelectedEndTime('');
+      setShowPopup(false);
+    }
+  };
+
   const roomOptions = {
     building1: {
       floor1: ['room1', 'room2'],
@@ -40,22 +62,30 @@ function DropDown() {
 
   const availableRooms = roomOptions[building][floor];
 
-  // Simuliere eine API-Anfrage, um den Zeitplan für den ausgewählten Raum abzurufen
   const fetchRoomSchedule = async () => {
     try {
-      // Hier die URL für die Backend-Anfrage einfügen
-      const response = await fetch(`API_URL${room}`); // Beispiel-URL, ersetzen Sie 'API_URL' durch Ihre tatsächliche Backend-URL
+      const response = await fetch(`API_URL${room}`);
       const data = await response.json();
-      setRoomSchedule(data.schedule); // Annahme: Das Backend sendet den Raumzeitplan als JSON-Daten mit dem Schlüssel 'schedule'
+      setRoomSchedule(data.schedule);
     } catch (error) {
       console.error('Error fetching room schedule:', error);
-      // Behandeln Sie den Fehler entsprechend
     }
   };
 
   useEffect(() => {
-    fetchRoomSchedule(); // Bei Änderungen von 'room' den Raumzeitplan abrufen
+    fetchRoomSchedule();
   }, [room]);
+
+  useEffect(() => {
+    const availableTimes = ['09:00', '10:00', '11:00', '12:00'];
+    setTimeOptions(availableTimes);
+  }, [roomSchedule]);
+
+  useEffect(() => {
+    if (showPopup) {
+      setBookingConfirmation(''); // Zurücksetzen der Buchungsbestätigung, wenn das Popup geöffnet wird
+    }
+  }, [showPopup]);
 
   return (
     <div className="container">
@@ -86,9 +116,32 @@ function DropDown() {
         </select>
       </div>
       <div>
-      <h3>{building === 'building1' ? 'Gebäude 6A' : 'Gebäude 6B'} {room}</h3>
-        <p>{roomSchedule}</p> {/* Hier wird der Raumzeitplan angezeigt */}
+        <h3>{building === 'building1' ? 'Gebäude 6A' : 'Gebäude 6B'} {room}</h3>
+        <p>{roomSchedule}</p>
+        <button onClick={() => setShowPopup(true)}>Buchen</button>
+        {bookingConfirmation && <p>{bookingConfirmation}</p>}
       </div>
+      {showPopup && (
+        <div className="popup">
+          {selectedStartTime && selectedEndTime ? (
+            <>
+              <h3>Bestätigen Sie Ihre Buchung für {room}</h3>
+              <p>Startzeit: {selectedStartTime}</p>
+              <p>Endzeit: {selectedEndTime}</p>
+              <button onClick={handleFinalBooking}>Abschließend buchen</button>
+            </>
+          ) : (
+            <>
+              <h3>{selectedStartTime ? 'Wählen Sie eine Endzeit' : 'Wählen Sie eine Startzeit'} für {room}</h3>
+              <div className="time-options">
+                {timeOptions.map((timeOption) => (
+                  <button key={timeOption} onClick={() => handleTimeSelection(timeOption)}>{timeOption}</button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

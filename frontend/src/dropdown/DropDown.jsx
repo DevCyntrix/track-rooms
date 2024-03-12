@@ -61,18 +61,18 @@ function DropDown() {
       <div className="dropdown">
         <label htmlFor="buildingSelect">Gebäude:</label>
         <select id="buildingSelect" value={building} onChange={handleBuildingChange}>
-          <option value="building1">Gebäude 6A</option>
-          <option value="building2">Gebäude 6B</option>
+          <option value="building1">6A</option>
+          <option value="building2">6B</option>
         </select>
       </div>
       <div className="dropdown">
         <label htmlFor="floorSelect">Etage:</label>
         <select id="floorSelect" value={floor} onChange={handleFloorChange}>
-          <option value="floor0">Etage 0</option>
-          <option value="floor1">Etage 1</option>
-          <option value="floor2">Etage 2</option>
-          <option value="floor3">Etage 3</option>
-          <option value="floor4">Etage 4</option>
+          <option value="floor0">0</option>
+          <option value="floor1">1</option>
+          <option value="floor2">2</option>
+          <option value="floor3">3</option>
+          <option value="floor4">4</option>
         </select>
       </div>
       <div className="dropdown">

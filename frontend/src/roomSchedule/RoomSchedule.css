@@ -1,0 +1,16 @@
+.calendar {
+  margin-bottom: 50px; /* oder die Höhe Ihres Footers */
+  z-index: -1;
+}
+
+/* Ändern Sie die Farbe und Größe der vorherigen und nächsten Pfeile */
+.fc-prev-button::before, .fc-next-button::before {
+color: #c70606 !important; /* Ändern Sie die Farbe nach Belieben */
+font-size: 20px !important; /* Ändern Sie die Größe nach Belieben */
+}
+
+/* Ändern Sie die Farbe und Größe des heutigen Pfeils */
+.fc-today-button::before {
+color: blue !important; /* Ändern Sie die Farbe nach Belieben */
+font-size: 20px !important; /* Ändern Sie die Größe nach Belieben */
+}

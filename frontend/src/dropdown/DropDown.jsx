@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DropDown.css';
+import RoomSchedule from '../roomSchedule/RoomSchedule';
+
 
 function DropDown() {
   const [building, setBuilding] = useState('building1');
   const [floor, setFloor] = useState('floor1');
-  const [room, setRoom] = useState('room1');
+  const [room, setRoom] = useState('');
   const [roomSchedule, setRoomSchedule] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -41,7 +43,8 @@ function DropDown() {
   };
 
   const handleRoomChange = (event) => {
-    setRoom(event.target.value);
+    const selectedRoom = event.target.value;
+    setRoom(selectedRoom);
   };
 
   const handleDateChange = (date) => {
@@ -59,30 +62,74 @@ function DropDown() {
     }
   };
 
-  const handleFinalBooking = () => {
+  const handleFinalBooking = async () => {
     if (selectedDate && selectedStartTime && selectedEndTime) {
-      const confirmationMessage = `Raum ${room} am ${selectedDate.toLocaleDateString()} von ${selectedStartTime} bis ${selectedEndTime} wurde erfolgreich gebucht.`;
-      setBookingConfirmation(confirmationMessage);
-      setSelectedDate(null);
-      setSelectedStartTime('');
-      setSelectedEndTime('');
-      setShowPopup(false);
-      setIsButtonDisabled(true);
+      console.log('selectedDate:', selectedDate);
+      console.log('selectedStartTime:', selectedStartTime);
+      console.log('selectedEndTime:', selectedEndTime);
+      console.log('room:', room);
+  
+      const formattedSelectedDate = selectedDate.toLocaleDateString('en-CA');
+      console.log('formattedSelectedDate:', formattedSelectedDate);
+  
+      const bookingStartDate = new Date(`${formattedSelectedDate}T${selectedStartTime}`);
+      const bookingEndDate = new Date(`${formattedSelectedDate}T${selectedEndTime}`);
+  
+      console.log('bookingStartDate:', bookingStartDate);
+      console.log('bookingEndDate:', bookingEndDate);
+  
+      if (isNaN(bookingStartDate.getTime()) || isNaN(bookingEndDate.getTime())) {
+        console.error('Invalid date format');
+        return;
+      }
+  
+      const bookingDetails = {
+        bookingStartDate: bookingStartDate.toISOString(),
+        bookingEndDate: bookingEndDate.toISOString(),
+        roomId: room,
+      };
+
+      try {
+
+        const response = await fetch('http://localhost:5555/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingDetails),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error booking room');
+      }
+
+        const confirmationMessage = `Raum ${room} am ${selectedDate.toLocaleDateString()} von ${selectedStartTime} bis ${selectedEndTime} wurde erfolgreich gebucht.`;
+        setBookingConfirmation(confirmationMessage);
+        setSelectedDate(null);
+        setSelectedStartTime('');
+        setSelectedEndTime('');
+        setShowPopup(false);
+        setIsButtonDisabled(true);
+      } catch (error) {
+        console.error('Error booking room:', error);
+      }
     }
   };
 
   const roomOptions = {
     building1: {
-      floor1: ['room1', 'room2'],
-      floor2: ['room3', 'room4'],
-      floor3: ['room9', 'room10'],
-      floor4: ['room10', 'room11']
+      floor0: ['6A040', '6A052'],
+      floor1: ['6A173', '6A140'],
+      floor2: ['6A240', '6A277'],
+      floor3: ['6A310', '6A312'],
+      floor4: ['6A452', '6A453']
     },
     building2: {
-      floor1: ['room5', 'room6'],
-      floor2: ['room7', 'room8'],
-      floor3: ['room9', 'room10'],
-      floor4: ['room10', 'room11']
+      floor0: ['6B040', '6B052'],
+      floor1: ['6B173', '6B140'],
+      floor2: ['6B240', '6B277'],
+      floor3: ['6B310', '6B312'],
+      floor4: ['6B452', '6B453']
     },
   };
 
@@ -90,7 +137,7 @@ function DropDown() {
 
   const fetchRoomSchedule = async () => {
     try {
-      const response = await fetch(`API_URL${room}`);
+      const response = await fetch(`http://localhost:5555/bookings/${room}`);
       const data = await response.json();
       setRoomSchedule(data.schedule);
     } catch (error) {
@@ -98,9 +145,9 @@ function DropDown() {
     }
   };
 
-  useEffect(() => {
-    fetchRoomSchedule();
-  }, [room]);
+  // useEffect(() => {
+  //   fetchRoomSchedule();
+  // }, [room]);
 
   useEffect(() => {
     const availableTimes = generateTimeOptions();
@@ -113,6 +160,14 @@ function DropDown() {
       setTimeSelectionText('Wählen Sie die Startzeit'); // Reset time selection text when popup is opened
     }
   }, [showPopup]);
+
+  useEffect(() => {
+    setRoom(''); // Setzt den Raum zurück, wenn das Gebäude geändert wird
+  }, [building]);
+
+  useEffect(() => {
+    setRoom(''); // Setzt den Raum zurück, wenn das Gebäude geändert wird
+  }, [floor]);
 
   return (
     <div className="container">
@@ -137,6 +192,7 @@ function DropDown() {
       <div className="dropdown">
         <label htmlFor="roomSelect">Raum:</label>
         <select id="roomSelect" value={room} onChange={handleRoomChange}>
+          <option value="">Select a room</option>
           {availableRooms.map((roomOption) => (
             <option key={roomOption} value={roomOption}>{roomOption}</option>
           ))}
@@ -154,8 +210,11 @@ function DropDown() {
       <div>
         <h3>{building === 'building1' ? 'Gebäude 6A' : 'Gebäude 6B'} {room}</h3>
         <p>{roomSchedule}</p>
-        <button onClick={() => setShowPopup(true)} disabled={isButtonDisabled}>Buchen</button>
+        <button id="buchenbutton" onClick={() => setShowPopup(true)} disabled={isButtonDisabled}>Buchen</button>
         {bookingConfirmation && <p>{bookingConfirmation}</p>}
+        <div class="calendar-container">
+          {room && <RoomSchedule room={room} />}
+        </div>
       </div>
       {showPopup && (
         <div className="popup">

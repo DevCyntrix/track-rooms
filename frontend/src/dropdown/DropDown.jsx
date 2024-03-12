@@ -10,7 +10,7 @@ function DropDown() {
 
   return (
     <div className="container">
-      <h2>Gebäude und Etagen Auswahl</h2>
+      <h2>Track Rooms</h2>
       <div className="dropdown">
         <label htmlFor="buildingSelect">Gebäude:</label>
         <select id="buildingSelect" value={building} onChange={handleBuildingChange}>

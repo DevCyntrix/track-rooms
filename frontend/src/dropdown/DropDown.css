@@ -84,6 +84,7 @@ button {
   font-size: 1rem;
 }
 
+
 @media screen and (max-width: 600px) {
   .container {
     margin-bottom: 60px; /* Platz für den Footer */
@@ -93,5 +94,23 @@ button {
     width: 90%; /* Breite des Popups für kleinere Bildschirme anpassen */
     max-height: 90%; /* Maximalhöhe des Popups anpassen */
     overflow-y: auto; /* Scrollen ermöglichen, wenn Inhalt zu groß ist */
+    z-index: 1000; /* Popup über anderen Inhalten positionieren */
   }
+
+  .date-picker {
+    z-index: 2000; /* Kalender über anderen Inhalten positionieren */
+  }
+}
+
+/* .calendar-container {
+  height: calc(100vh - 100px);
+  overflow: auto;
+} */
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+#buchenbutton {
+  margin-bottom: 30px;
 }

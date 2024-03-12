@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const bookingSchema = mongoose.Schema(
         {
             bookingStartDate: {
-                type: Number,
+                type: Date,
                 required: true,
             },
             bookingEndDate: {
-                type: Number,
+                type: Date,
                 required: true, 
             },
             roomId: {

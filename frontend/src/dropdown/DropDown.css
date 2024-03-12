@@ -5,17 +5,17 @@
 
 .dropdown {
   display: flex;
-  flex-direction: column; /* Flexbox in Spaltenrichtung */
-  align-items: flex-start; /* Ausrichtung am Anfang */
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   margin-bottom: 20px;
 }
 
 label {
-  align-self: flex-start; /* Ausrichtung am Anfang innerhalb des Flexbox-Containers */
+  align-self: flex-start;
 }
 
-select {
+select, button {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -52,6 +52,10 @@ select:hover, button:hover {
 }
 
 .popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: #fff;
   border-radius: 5px;
   padding: 20px;
@@ -66,9 +70,28 @@ select:hover, button:hover {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
+  max-height: 200px; /* Maximale Höhe für die Uhrzeiten festlegen */
+  overflow-y: auto; /* Vertikales Scrollen ermöglichen */
 }
 
 button {
   width: 100%;
 }
 
+.date-picker {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    margin-bottom: 60px; /* Platz für den Footer */
+  }
+
+  .popup {
+    width: 90%; /* Breite des Popups für kleinere Bildschirme anpassen */
+    max-height: 90%; /* Maximalhöhe des Popups anpassen */
+    overflow-y: auto; /* Scrollen ermöglichen, wenn Inhalt zu groß ist */
+  }
+}

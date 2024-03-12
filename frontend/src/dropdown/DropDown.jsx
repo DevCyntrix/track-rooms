@@ -1,39 +1,63 @@
 
 import "./DropDown.css";
 
-export default function DropDown({id, open, onClick, labelText, children}){
-
-    function handleClick(){ //if accordion clicked on then reverse state (default state is closed/false)
-        onClick(id);
-    }
-
-    function toggleDropdown() {
-        var dropdownMenu = document.getElementById("myDropdown");
-        dropdownMenu.classList.toggle("show");
-      }
-      
-      // Schließe das Dropdown-Menü, wenn außerhalb davon geklickt wird
-      window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
-          var dropdowns = document.getElementsByClassName("dropdown-content");
-          var i;
-          for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-              openDropdown.classList.remove('show');
-            }
-          }
-        }
-      }
-
-    return( //what is displayed on the screen; instead of labelText do menu photo
+function DropDown() {
+  return (
+    <div class="container">
+    <h2>Gebäude und Etagen Auswahl</h2>
     <div class="dropdown">
-        <button onclick="toggleDropdown()" class="dropbtn">Dropdown</button>
-        <div id="myDropdown" class="dropdown-content">
-        <a href="#">Eintrag 1</a>
-        <a href="#">Eintrag 2</a>
-        <a href="#">Eintrag 3</a>
+      <label for="buildingSelect">Gebäude:</label>
+      <select id="buildingSelect">
+        <option value="building1">Gebäude 1</option>
+        <option value="building2">Gebäude 2</option>
+      </select>
+    </div>
+    <div class="dropdown">
+      <label for="floorSelect">Etage:</label>
+      <select id="floorSelect">
+        <option value="floor1">Etage 1</option>
+        <option value="floor2">Etage 2</option>
+        <option value="floor3">Etage 3</option>
+      </select>
+    </div>
+    <div class="dropdown">
+      <label for="roomSelect">Raum:</label>
+      <select id="roomSelect">
+        <option value="room1">Raum 1</option>
+        <option value="room2">Raum 2</option>
+        <option value="room3">Raum 3</option>
+      </select>
     </div>
   </div>
-    );
+   );
+}
+
+export default DropDown;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const buildingSelect = document.getElementById('buildingSelect');
+  const floorSelect = document.getElementById('floorSelect');
+  
+  buildingSelect.addEventListener('change', function() {
+    // Leere das Etagen-Auswahlmenü
+    floorSelect.innerHTML = '';
+    
+    // Füge Etagen basierend auf der Gebäudeauswahl hinzu
+    if (buildingSelect.value === 'building1') {
+      addOption(floorSelect, 'Etage 1', 'floor1');
+      addOption(floorSelect, 'Etage 2', 'floor2');
+    } else if (buildingSelect.value === 'building2') {
+      addOption(floorSelect, 'Etage 1', 'floor1');
+      addOption(floorSelect, 'Etage 2', 'floor2');
+      addOption(floorSelect, 'Etage 3', 'floor3');
+    }
+  });
+});
+
+// Hilfsfunktion zum Hinzufügen von Optionen zu einem Select-Element
+function addOption(selectElement, text, value) {
+  const option = document.createElement('option');
+  option.textContent = text;
+  option.value = value;
+  selectElement.appendChild(option);
 }

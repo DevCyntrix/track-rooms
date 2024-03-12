@@ -4,12 +4,15 @@
 }
 
 .dropdown {
+  display: flex;
+  flex-direction: column; /* Flexbox in Spaltenrichtung */
+  align-items: flex-start; /* Ausrichtung am Anfang */
   width: 100%;
   margin-bottom: 20px;
 }
 
 label {
-  display: none; /* Titel ausblenden */
+  align-self: flex-start; /* Ausrichtung am Anfang innerhalb des Flexbox-Containers */
 }
 
 select {
@@ -17,7 +20,7 @@ select {
   padding: 10px;
   font-size: 16px;
   margin-top: 5px;
-  background-color: #f2f2f2; /* Hellgraue Hintergrundfarbe */
-  border: none; /* Kein Rahmen */
-  border-radius: 5px; /* Abgerundete Ecken */
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 5px;
 }

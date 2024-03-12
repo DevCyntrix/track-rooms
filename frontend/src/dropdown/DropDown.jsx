@@ -28,11 +28,13 @@ function DropDown() {
       floor1: ['room1', 'room2'],
       floor2: ['room3', 'room4'],
       floor3: ['room9', 'room10'],
+      floor4: ['room10', 'room11']
     },
     building2: {
       floor1: ['room5', 'room6'],
       floor2: ['room7', 'room8'],
       floor3: ['room9', 'room10'],
+      floor4: ['room10', 'room11']
     },
   };
 

@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity("bookings")
 export class Booking {
   @ApiProperty({
     example: 1,
@@ -17,18 +17,19 @@ export class Booking {
   id: number;
 
   @ApiProperty({
-    example: '2021-12-12T00:00:00.000Z',
+    example: 1731423600
   })
   @Column({
-    // unique: true,
+    type: "bigint"
   })
   from: Date;
 
   @ApiProperty({
-    example: '2021-12-12T00:00:00.000Z',
+    example: 1731427200
   })
   @Column({
     // unique: true,
+    type: "bigint"
   })
   to: Date;
 
@@ -42,7 +43,7 @@ export class Booking {
     example: '2021-12-12T00:00:00.000Z',
   })
   @CreateDateColumn({
-    type: 'timestamp',
+    type: "timestamp",
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   createdAt: Date;

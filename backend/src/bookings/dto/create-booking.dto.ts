@@ -3,16 +3,16 @@ import { IsDateString, IsNumber } from 'class-validator';
 
 export class CreateBookingDto {
   @ApiProperty({
-    example: '2021-10-01T00:00:00.000Z',
+    example: 1731423600
   })
-  @IsDateString()
-  from: Date;
+  @IsNumber()
+  from: number;
 
   @ApiProperty({
-    example: '2021-10-01T00:00:00.000Z',
+    example: 1731427200
   })
-  @IsDateString()
-  to: Date;
+  @IsNumber()
+  to: number;
 
   @ApiProperty({
     example: 1,

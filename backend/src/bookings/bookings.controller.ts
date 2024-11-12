@@ -17,6 +17,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { Booking } from './entities/booking.entity';
+import { FromToDateDto } from './dto/from-to-date.dto';
 
 @Controller('bookings')
 export class BookingsController {
@@ -89,5 +90,10 @@ export class BookingsController {
   })
   remove(@Param('id') id: number) {
     return this.bookingsService.remove(id);
+  }
+
+  @Post('overlapping')
+  getOverlapping(@Body() { from, to }: FromToDateDto) {
+    return this.bookingsService.findOverlapping(from, to);
   }
 }

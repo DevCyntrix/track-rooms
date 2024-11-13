@@ -3,7 +3,6 @@ import { BookingsService } from './bookings.service';
 import { BookingsController } from './bookings.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Booking } from './entities/booking.entity';
-import { RoomsModule } from 'src/rooms/rooms.module';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { Room } from 'src/rooms/entities/room.entity';
 

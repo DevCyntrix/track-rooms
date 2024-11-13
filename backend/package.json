@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "track-rooms-backend",
   "version": "0.0.1",
-  "description": "",
+  "description": "The track rooms backend",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

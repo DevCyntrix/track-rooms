@@ -1,7 +1,12 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
-import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Booking } from './entities/booking.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomsService } from 'src/rooms/rooms.service';
@@ -17,14 +22,7 @@ export class BookingsService {
   ) {}
 
   public async create(createBookingDto: CreateBookingDto) {
-    const overlappings = await this.findOverlapping(
-       createBookingDto.from,
-      createBookingDto.to
-    )
-
-    if(overlappings.length > 0) {
-      throw new Error("Booking is overlaping");
-    }
+    await this.validateBookingDates(createBookingDto.from, createBookingDto.to);
 
     // ensure the room exists. FindOne will throw an error if the room does not exist
     await this.roomsService.findOne(createBookingDto.roomId);
@@ -73,11 +71,35 @@ export class BookingsService {
   }
 
   public async findOverlapping(from: number, to: number) {
-    return await this.bookingRepository.createQueryBuilder('booking')
-      .where('booking.from >= :from AND booking.to <= :to', { from: from, to: to })
-      // .andWhere('booking.to <= :to', { to: from })
-      // .
+    return await this.bookingRepository
+      .createQueryBuilder('booking')
+      .where('booking.from >= :from AND booking.to <= :to', {
+        from: from,
+        to: to,
+      })
       .getMany();
-      // .getSql();
+  }
+
+  public async validateBookingDates(from: number, to: number) {
+    if (from >= to) {
+      throw new UnprocessableEntityException(
+        'From datetime should be less than to datetime',
+      );
+    }
+
+    if (from < new Date().getTime()) {
+      throw new UnprocessableEntityException(
+        'From datetime should be in the future',
+      );
+    }
+
+    const overlappings = await this.findOverlapping(from, to);
+
+    if (overlappings.length > 0) {
+      throw new UnprocessableEntityException(
+        overlappings,
+        'Booking is overlaping',
+      );
+    }
   }
 }

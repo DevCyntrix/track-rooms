@@ -1,12 +1,13 @@
 # TrackRooms
 
-## How to run the website
-1. Clone the repository
-2. ```cd backend``` - change directory to backend
-3. ```npm install```
-4. ```npm run dev```
-5. ```cd ..``` - Go back to the root of the project
-6. ```cd frontend``` - change directory to frontend
-7. ```npm install```
-8. ```npm run dev```
-9. Click the link in the Terminal or go to the browser and open http://localhost:5173/
+## How to use the backend
+### Start the database
+1. Navigate into the backend folder: `cd backend`
+2. Start the database docker container `docker-compose up -d`
+
+### Start the backend
+1. Rename the `.env.example` file to `.env`
+2. Start the backend: `yarn start:dev` or `npm run start:dev`
+3. Test the backend:
+    * Open the Swagger UI: [http://localhost:3000](http://localhost:3000)
+    * Test the backend endpoints with the swagger ui

@@ -1,17 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Room } from './entities/room.entity';
 import { Repository } from 'typeorm';
 import * as rooms from './data/rooms.json';
+import { TimeTableService } from 'src/timetable/timetable.service';
 
 @Injectable()
 export class RoomsService {
   constructor(
     @InjectRepository(Room)
     private roomRepository: Repository<Room>,
-  ) {}
+    @Inject(TimeTableService)
+    private timeTableService: TimeTableService,
+  ) {
+  }
 
   public async create(createRoomDto: CreateRoomDto) {
     const room = this.roomRepository.create(createRoomDto);
@@ -23,9 +27,9 @@ export class RoomsService {
     return await this.roomRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(key: string) {
     const room = await this.roomRepository.findOne({
-      where: { id },
+      where: { key },
       relations: ['bookings'],
     });
 
@@ -33,10 +37,12 @@ export class RoomsService {
       throw new NotFoundException('Room with id not found');
     }
 
+    timeTableService.
+
     return room;
   }
 
-  public async update(id: number, updateRoomDto: UpdateRoomDto) {
+  public async update(id: string, updateRoomDto: UpdateRoomDto) {
     const room = await this.findOne(id);
 
     const mergedRoom = this.roomRepository.merge(room, updateRoomDto);
@@ -44,7 +50,7 @@ export class RoomsService {
     return await this.roomRepository.save(mergedRoom);
   }
 
-  public async remove(id: number) {
+  public async remove(id: string) {
     const room = await this.findOne(id);
 
     await this.roomRepository.remove(room);

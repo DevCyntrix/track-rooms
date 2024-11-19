@@ -61,7 +61,7 @@ export class BookingsController {
   findOne(@Param('id') id: number) {
     return this.bookingsService.findOne(id);
   }
-
+  
   @Patch(':id')
   @ApiOkResponse({
     description: 'The record has been successfully updated.',

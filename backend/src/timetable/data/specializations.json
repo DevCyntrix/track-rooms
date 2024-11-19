@@ -1,0 +1,25 @@
+[
+    {
+        "name": "informatik",
+        "courses": [
+            "semester1 - kurs",
+            "semester1 - kursa",
+            "semester1 - kursb",
+            "semester2 - kurs",
+            "semester2 - kursa",
+            "semester2 - kursb",
+            "semester3 - kurs",
+            "semester3 - kursa",
+            "semester3 - kursb",
+            "semester4 - kurs",
+            "semester4 - kursa",
+            "semester4 - kursb",
+            "semester5 - kurs",
+            "semester5 - kursa",
+            "semester5 - kursb",
+            "semester6 - kurs",
+            "semester6 - kursa",
+            "semester6 - kursb"
+        ]
+    }
+]

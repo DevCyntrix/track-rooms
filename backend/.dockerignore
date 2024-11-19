@@ -1,0 +1,8 @@
+.env
+.env.example
+Dockerfile
+psql.sh
+README.md
+node_modules/
+dist/
+cache/

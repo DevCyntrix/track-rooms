@@ -1,63 +1,45 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateRoomDto } from './dto/update-room.dto';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Room } from './../rooms/entities/room.entity';
 import { Repository } from 'typeorm';
 import { Building } from './dto/building.dto';
 
 @Injectable()
-export class BuildingsService {
+export class BuildingsService implements OnModuleInit {
+  private logger: Logger = new Logger(BuildingsService.name);
 
   private buildings: Building[] = [];
 
-  constructor(@InjectRepository(Room) roomRepository: Repository<Room>,) {
-    roomRepository.find({
-      
-    })
-  }
+  constructor(
+    @InjectRepository(Room) 
+    private roomsRepository: Repository<Room>,
+  ) {}
 
-  public async create(createRoomDto: CreateRoomDto) {
-    const room = this.roomRepository.create(createRoomDto);
+  public async onModuleInit() {
+    this.logger.log('Start caching buildings');
 
-    return await this.roomRepository.save(room);
-  }
+    const result = await this.roomsRepository
+      .createQueryBuilder('room')
+      .select('building')
+      .distinct(true)
+      .getRawMany();
 
-  public async findAll() {
-    return await this.roomRepository.find();
-  }
-
-  async findOne(key: string) {
-    const room = await this.roomRepository.findOne({
-      where: { key },
-      relations: ['bookings'],
+    result.forEach((row) => {
+      this.buildings.push(row.building);
     });
 
-    if (!room) {
-      throw new NotFoundException('Room with id not found');
-    }
-
-    return room;
+    this.logger.log('Found buildings: ' + this.buildings.length);
   }
 
-  public async update(id: string, updateRoomDto: UpdateRoomDto) {
-    const room = await this.findOne(id);
-
-    const mergedRoom = this.roomRepository.merge(room, updateRoomDto);
-
-    return await this.roomRepository.save(mergedRoom);
+  public findAll(): Building[] {
+    return this.buildings;
   }
 
-  public async remove(id: string) {
-    const room = await this.findOne(id);
 
-    await this.roomRepository.remove(room);
 
-    return room;
-  }
-
-  public async import() {
-    for (const room of rooms) {
-      await this.create(room);
-    }
-  }
 }

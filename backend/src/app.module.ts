@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { BookingsModule } from './bookings/bookings.module';
 import { TimeTableModule } from './timetable/timetable.module';
+import { BuildingsModule } from './buildings/buildings.module';
 
 @Module({
   imports: [
@@ -21,10 +22,12 @@ import { TimeTableModule } from './timetable/timetable.module';
       database: process.env.DB_DATABASE,
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
+      // dropSchema: true,
     }),
     RoomsModule,
     BookingsModule,
-    TimeTableModule
+    TimeTableModule,
+    BuildingsModule
   ],
   controllers: [AppController],
   providers: [AppService],

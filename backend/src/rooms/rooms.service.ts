@@ -37,7 +37,7 @@ export class RoomsService {
       throw new NotFoundException('Room with id not found');
     }
 
-    timeTableService.
+    // timeTableService.
 
     return room;
   }

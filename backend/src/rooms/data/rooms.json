@@ -2,21 +2,41 @@
     {
         "key": "6A040",
         "floor": "0",
-        "building": "A"
+        "building": "6A"
     },
     {
         "key": "6A052",
         "floor": "0",
-        "building": "A"
+        "building": "6A"
     },
     {
         "key": "6A173",
         "floor": "1",
-        "building": "A"
+        "building": "6A"
     },
     {
         "key": "6A140",
         "floor": "1",
-        "building": "A"
+        "building": "6A"
+    },
+    {
+        "key": "6B040",
+        "floor": "0",
+        "building": "6B"
+    },
+    {
+        "key": "6B052",
+        "floor": "0",
+        "building": "6B"
+    },
+    {
+        "key": "6B173",
+        "floor": "1",
+        "building": "6B"
+    },
+    {
+        "key": "6B140",
+        "floor": "1",
+        "building": "6B"
     }
 ]

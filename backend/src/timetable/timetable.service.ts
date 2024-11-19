@@ -20,11 +20,11 @@ export class TimeTableService {
   private events: Event[] = [];
 
   constructor() {
-    if (!fs.existsSync("cache/timetable") || !fs.lstatSync("cache/timetable").isDirectory()) {
-      fs.mkdirSync("cache/timetable", { recurvise: true })
-    }
+    // if (!fs.existsSync("./cache/timetable") || !fs.lstatSync("./cache/timetable").isDirectory()) {
+    //   fs.mkdirSync("./cache/timetable", { recurvise: true })
+    // }
 
-    this.getEvents();
+    // this.getEvents();
   }
 
   private filterEvent(event: any): boolean {
@@ -65,7 +65,7 @@ export class TimeTableService {
     return formated;
   }
 
-  @Cron('* * * * *')
+  // @Cron('* * * * *')
   private async getEvents() {
     try {
       specializations.forEach((spec) => {

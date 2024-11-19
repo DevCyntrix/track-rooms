@@ -54,4 +54,6 @@ export class Booking {
 
   @ManyToOne(() => Room, (room) => room.bookings)
   room: Room;
+
+  name: string;
 }

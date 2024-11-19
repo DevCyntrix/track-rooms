@@ -3,28 +3,38 @@ import {
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
-  Logger
+  Logger,
+  OnModuleInit
 } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { Event } from 'src/timetable/dto/event.dto'
 import * as specializations from './data/specializations.json';
+import { Cron } from '@nestjs/schedule';
 const ical = require('node-ical');
 const fs = require("node:fs");
 const util = require("node:util");
 
 @Injectable()
-export class TimeTableService {
+export class TimeTableService implements OnModuleInit {
 
   private readonly logger = new Logger(TimeTableService.name);
   private readonly ICAL_URL = "https://hwrical.zrgr.pw/%s/%s/%s/";
   private events: Event[] = [];
+  private roomTimeTable = new Map<string, Event[]>();
 
   constructor() {
-    // if (!fs.existsSync("./cache/timetable") || !fs.lstatSync("./cache/timetable").isDirectory()) {
-    //   fs.mkdirSync("./cache/timetable", { recurvise: true })
-    // }
+  }
+  async onModuleInit() {
+    if (!fs.existsSync("./cache/timetable") || !fs.lstatSync("./cache/timetable").isDirectory()) {
+      fs.mkdirSync("./cache/timetable", { recurvise: true })
+    }
 
-    // this.getEvents();
+    await this.getEvents();
+    this.logger.log(JSON.stringify(this.roomTimeTable));
+  }
+
+  public getEventsFromRoom(id: string): Event[] {
+    console.log(this.roomTimeTable.keys());
+    return this.roomTimeTable.get(id);
   }
 
   private filterEvent(event: any): boolean {
@@ -33,9 +43,9 @@ export class TimeTableService {
       event.summary === undefined;
   }
 
-  private formatEvents(events: any[]): Event[] {
+  private formatEvents(events: any[], course: string): Event[] {
     const formated = [];
-    let roomPattern = /\[.*\: (.*)\]/;
+    let roomPattern = /\[.*\: (.*) (\(.*\))?\]/;
 
 
     for (const element of events) {
@@ -45,16 +55,15 @@ export class TimeTableService {
         continue;
       }
 
-      this.logger.log(event.summary);
       let room = undefined;
       if (roomPattern.test(event.summary)) {
         let result = event.summary.match(roomPattern);
-        console.log(result);
         room = result[1].replace('.', '');
       }
 
       formated.push({
         uid: event.uid,
+        course,
         start: event.start,
         end: event.end,
         room: room,
@@ -65,8 +74,9 @@ export class TimeTableService {
     return formated;
   }
 
-  // @Cron('* * * * *')
+  @Cron('* * * * *')
   private async getEvents() {
+    this.roomTimeTable.clear();
     try {
       specializations.forEach((spec) => {
         this.logger.log('Looking for courses of ' + spec.name);
@@ -74,13 +84,21 @@ export class TimeTableService {
           let split = course.split(" - ", 2);
           let url = util.format(this.ICAL_URL, spec.name, split[0], split[1])
 
-          let events = await this.fetchEvents(url);
+          let events = await this.fetchEvents(url, course);
+
+          events.forEach((event) => {
+            if (event.room) {
+              let roomEvents = this.roomTimeTable.get(event.room) ?? [];
+              roomEvents.push(event);
+              this.roomTimeTable.set(event.room, roomEvents);
+            }
+          });
+
           fs.writeFileSync(
             util.format("cache/timetable/%s-%s.json", spec.name, course),
             JSON.stringify(events, null, 4),
             { encoding: 'utf8', mode: 0o660, flag: 'w+', flush: true }
           );
-          this.logger.log(url)
         });
       });
     } catch (error) {
@@ -88,12 +106,12 @@ export class TimeTableService {
     }
   }
 
-  private async fetchEvents(url: string): Promise<Event[]> {
+  private async fetchEvents(url: string, course: string): Promise<Event[]> {
     this.logger.log('Fetching events from ' + url);
 
     let events = await ical.async.fromURL(url);
     events = Object.values(events);
-    events = this.formatEvents(events);
+    events = this.formatEvents(events, course);
 
     this.logger.debug('Fetched ' + events.length + ' events');
     return events;

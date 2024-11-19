@@ -73,7 +73,7 @@ export class TimeTableService implements OnModuleInit {
     return formated;
   }
 
-  @Cron('* * * * *')
+  @Cron('0 * * * *')
   private async getEvents() {
     this.roomTimeTable.clear();
     try {

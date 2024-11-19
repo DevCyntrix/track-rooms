@@ -5,6 +5,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { BookingsModule } from './bookings/bookings.module';
+import { TimeTableModule } from './timetable/timetable.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { BookingsModule } from './bookings/bookings.module';
     }),
     RoomsModule,
     BookingsModule,
+    TimeTableModule
   ],
   controllers: [AppController],
   providers: [AppService],

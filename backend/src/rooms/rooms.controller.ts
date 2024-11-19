@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -58,7 +59,7 @@ export class RoomsController {
   @ApiOperation({
     summary: 'Retrieve a room by id',
   })
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.roomsService.findOne(id);
   }
 
@@ -73,7 +74,7 @@ export class RoomsController {
   @ApiOperation({
     summary: 'Update a room by id',
   })
-  update(@Param('id') id: number, @Body() updateRoomDto: UpdateRoomDto) {
+  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(id, updateRoomDto);
   }
 
@@ -88,7 +89,7 @@ export class RoomsController {
   @ApiOperation({
     summary: 'Deleted a room by id',
   })
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: string) {
     return this.roomsService.remove(id);
   }
 

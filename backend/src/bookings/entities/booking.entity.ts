@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 import { Room } from 'src/rooms/entities/room.entity';
 import {
   Column,
@@ -47,14 +48,6 @@ export class Booking {
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   createdAt: Date;
-
-  @ApiProperty({
-    example: 1,
-  })
-  @Column({
-    // unique: true,
-  })
-  roomId: number;
 
   @ManyToOne(() => Room, (room) => room.bookings)
   room: Room;

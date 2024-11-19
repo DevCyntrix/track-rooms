@@ -23,7 +23,7 @@ export class TimeTableService implements OnModuleInit {
       !fs.existsSync('./cache/timetable') ||
       !fs.lstatSync('./cache/timetable').isDirectory()
     ) {
-      fs.mkdirSync('./cache/timetable', { recurvise: true });
+      fs.mkdirSync('./cache/timetable', { recursive: true });
     }
 
     await this.getEvents();

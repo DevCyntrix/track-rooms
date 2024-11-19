@@ -14,8 +14,7 @@ export class RoomsService {
     private roomRepository: Repository<Room>,
     @Inject(TimeTableService)
     private timeTableService: TimeTableService,
-  ) {
-  }
+  ) {}
 
   public async create(createRoomDto: CreateRoomDto) {
     const room = this.roomRepository.create(createRoomDto);
@@ -62,5 +61,29 @@ export class RoomsService {
     for (const room of rooms) {
       await this.create(room);
     }
+  }
+
+  public async getAvailableRooms(
+    from: number,
+    to: number,
+    building: string,
+    floor: string,
+  ) {
+    // get all free rooms in the building and floor for the given time
+    const result = await this.roomRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.bookings', 'booking')
+      .where('room.building = :building', { building })
+      .andWhere('room.floor = :floor', { floor })
+      .getMany();
+
+    // filter out rooms that are not available
+    const available = result.filter((room) => {
+      return !room.bookings.some((booking) => {
+        return booking.from >= from && booking.to <= to;
+      });
+    });
+
+    return available;
   }
 }

@@ -23,7 +23,7 @@ export class Booking {
   @Column({
     type: 'bigint',
   })
-  from: Date;
+  from: number;
 
   @ApiProperty({
     example: 1731427200,
@@ -32,7 +32,7 @@ export class Booking {
     // unique: true,
     type: 'bigint',
   })
-  to: Date;
+  to: number;
 
   @ApiProperty({
     example: 1,
@@ -48,6 +48,9 @@ export class Booking {
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
   createdAt: Date;
+
+  @Column()
+  roomKey: string;
 
   @ManyToOne(() => Room, (room) => room.bookings)
   room: Room;

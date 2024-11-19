@@ -25,7 +25,7 @@ export class BookingsService {
     await this.validateBookingDates(createBookingDto.from, createBookingDto.to);
 
     // ensure the room exists. FindOne will throw an error if the room does not exist
-    await this.roomsService.findOne(createBookingDto.roomId);
+    await this.roomsService.findOne(createBookingDto.roomKey);
 
     const booking = this.bookingRepository.create(createBookingDto);
 
@@ -86,6 +86,11 @@ export class BookingsService {
         'From datetime should be less than to datetime',
       );
     }
+
+    console.log(from);
+    console.log(new Date().getTime());
+    console.log(from - new Date().getTime());
+    console.log(from < new Date().getTime());
 
     if (from < new Date().getTime()) {
       throw new UnprocessableEntityException(

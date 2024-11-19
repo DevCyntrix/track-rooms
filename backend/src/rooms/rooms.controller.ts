@@ -104,4 +104,22 @@ export class RoomsController {
   async import() {
     return await this.roomsService.import();
   }
+
+
+  @Post('/available')
+  @ApiOkResponse({
+    type: [Room],
+    description: 'The available rooms have been successfully retrieved',
+  })
+  @ApiOperation({
+    summary: 'Retrieve available rooms',
+  })
+  async getAvailableRooms(
+    @Query('date') date: number,
+    @Query('time') time: number,
+    @Query('building') building: string,
+    @Query('floor') floor: string,
+  ) {
+    return await this.roomsService.getAvailableRooms(date, time, building, floor);
+  }
 }

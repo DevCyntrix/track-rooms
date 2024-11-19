@@ -6,6 +6,7 @@ import { Room } from './entities/room.entity';
 import { Repository } from 'typeorm';
 import * as rooms from './data/rooms.json';
 import { TimeTableService } from 'src/timetable/timetable.service';
+import { Booking } from 'src/bookings/entities/booking.entity';
 
 @Injectable()
 export class RoomsService {
@@ -36,7 +37,18 @@ export class RoomsService {
       throw new NotFoundException('Room with id not found');
     }
 
-    // timeTableService.
+    let events = this.timeTableService.getEventsFromRoom(key) ?? [];
+    console.log(events);
+    events.forEach((event) => {
+      let booking = new Booking();
+      booking.id = -1;
+      booking.createdAt = new Date(-1);
+      booking.from = new Date(event.start);
+      booking.to = new Date(event.end);
+      booking.name = event.course + ': ' + event.summary;
+
+      room.bookings.push(booking)
+    });
 
     return room;
   }

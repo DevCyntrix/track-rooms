@@ -10,6 +10,10 @@ export class Event {
   @IsNotEmpty()
   uid: string;
 
+  @IsString()
+  @IsNotEmpty()
+  course: string;
+
   @ApiProperty({
     example: '2024-12-20T08:00:00.000Z',
   })

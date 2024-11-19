@@ -1,16 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Booking } from 'src/bookings/entities/booking.entity';
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, Index, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('rooms')
 export class Room {
-
   @ApiProperty({
     example: '6B040',
   })

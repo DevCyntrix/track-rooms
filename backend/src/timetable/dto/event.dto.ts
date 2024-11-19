@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class Event {
-
   @ApiProperty({
     example: 'sked.de1118764',
   })
@@ -36,7 +35,8 @@ export class Event {
   room: string;
 
   @ApiProperty({
-    example: 'Klausur: Wpff. I: Artificial Intelligence/Künstliche [CL: 5.0002]',
+    example:
+      'Klausur: Wpff. I: Artificial Intelligence/Künstliche [CL: 5.0002]',
   })
   @IsString()
   @IsNotEmpty()

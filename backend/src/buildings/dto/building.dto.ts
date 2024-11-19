@@ -4,5 +4,5 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class Building {
   id: string;
 
-  floors: string[]
+  floors: string[];
 }

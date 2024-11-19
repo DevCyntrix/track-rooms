@@ -105,7 +105,6 @@ export class RoomsController {
     return await this.roomsService.import();
   }
 
-
   @Post('/available')
   @ApiOkResponse({
     type: [Room],
@@ -120,6 +119,11 @@ export class RoomsController {
     @Query('building') building: string,
     @Query('floor') floor: string,
   ) {
-    return await this.roomsService.getAvailableRooms(date, time, building, floor);
+    return await this.roomsService.getAvailableRooms(
+      date,
+      time,
+      building,
+      floor,
+    );
   }
 }

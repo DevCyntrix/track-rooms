@@ -1,13 +1,6 @@
-import {
-  Controller,
-  Get,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { BuildingsService } from './buildings.service';
-import {
-  ApiOkResponse,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('buildings')
 export class BuildingsController {
@@ -19,7 +12,6 @@ export class BuildingsController {
   async findAll() {
     return this.buildingsService.findAll();
   }
-
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a building by id' })

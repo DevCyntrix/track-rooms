@@ -27,7 +27,7 @@ import { BuildingsModule } from './buildings/buildings.module';
     RoomsModule,
     BookingsModule,
     TimeTableModule,
-    BuildingsModule
+    BuildingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

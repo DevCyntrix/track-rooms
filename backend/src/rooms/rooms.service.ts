@@ -37,17 +37,17 @@ export class RoomsService {
       throw new NotFoundException('Room with id not found');
     }
 
-    let events = this.timeTableService.getEventsFromRoom(key) ?? [];
+    const events = this.timeTableService.getEventsFromRoom(key) ?? [];
     console.log(events);
     events.forEach((event) => {
-      let booking = new Booking();
+      const booking = new Booking();
       booking.id = -1;
       booking.createdAt = new Date(-1);
       booking.from = new Date(event.start);
       booking.to = new Date(event.end);
       booking.name = event.course + ': ' + event.summary;
 
-      room.bookings.push(booking)
+      room.bookings.push(booking);
     });
 
     return room;

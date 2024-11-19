@@ -21,7 +21,7 @@ export class CreateBookingDto {
   userId: number;
 
   @ApiProperty({
-    example: "6B040",
+    example: '6B040',
   })
   @IsString()
   roomKey: string;

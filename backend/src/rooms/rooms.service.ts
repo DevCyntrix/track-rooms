@@ -43,8 +43,8 @@ export class RoomsService {
       const booking = new Booking();
       booking.id = -1;
       booking.createdAt = new Date(-1);
-      booking.from = new Date(event.start);
-      booking.to = new Date(event.end);
+      booking.from = Math.floor(new Date(event.start).getTime() / 1000);
+      booking.to = Math.floor(new Date(event.end).getTime() / 1000);
       booking.name = event.course + ': ' + event.summary;
 
       room.bookings.push(booking);

@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
 import { Room } from 'src/rooms/entities/room.entity';
 import {
   Column,

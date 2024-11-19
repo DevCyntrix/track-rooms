@@ -31,7 +31,7 @@ export class BuildingsService implements OnModuleInit {
 
     const result = rawResult.reduce((acc, { building, floor }) => {
       const buildingEntry = acc.find((entry) => entry.building === building);
-      
+
       if (buildingEntry) {
         buildingEntry.floors.push(floor);
       } else {
@@ -42,7 +42,6 @@ export class BuildingsService implements OnModuleInit {
 
       return acc;
     }, []);
-
 
     this.buildings = result.map(({ building, floors }) => ({
       id: building,
@@ -57,7 +56,7 @@ export class BuildingsService implements OnModuleInit {
    * @returns All buildings
    */
   public findAll(): string[] {
-    return this.buildings.map(x => x.id);
+    return this.buildings.map((x) => x.id);
   }
 
   /**

@@ -46,7 +46,7 @@ export class BuildingsService implements OnModuleInit {
     this.buildings = result.map(({ building, floors }) => ({
       id: building,
       floors,
-    }));
+    })).sort((a, b) => a.id.localeCompare(b.id));
 
     this.logger.log('Found buildings: ' + this.buildings.length);
   }

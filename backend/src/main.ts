@@ -7,6 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   setupSwagger(app);
+  app.enableCors({
+    origin: "*"
+  })
 
   app.useGlobalPipes(new ValidationPipe());
 

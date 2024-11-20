@@ -1,0 +1,27 @@
+.home {
+    display: flex;
+    margin-top: 10vh;
+}
+
+.card {
+    position: relative;
+    width: 30vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    background-color: white;
+}
+
+.card mat-card-title {
+    font-weight: bold;
+}
+
+.class-img {
+    width: 20vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+.search-button {
+    position: relative;
+    margin-top: 2vh;
+}

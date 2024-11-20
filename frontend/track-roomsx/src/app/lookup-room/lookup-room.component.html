@@ -1,0 +1,53 @@
+<form [formGroup]="lookupForm" (ngSubmit)="onSubmit()" class="lookup-form">
+  <mat-form-field>
+    <mat-label>Building</mat-label>
+    <mat-select formControlName="building" required>
+      <mat-option value="" disabled>Select a building</mat-option>
+      <mat-option *ngFor="let building of buildings" [value]="building">
+        {{ building }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Floor</mat-label>
+    <mat-select formControlName="floor" required>
+      <mat-option value="" disabled>Select a floor</mat-option>
+      <mat-option *ngFor="let floor of floors" [value]="floor">
+        {{ floor }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Room</mat-label>
+    <mat-select formControlName="room" required>
+      <mat-option value="" disabled>Select a room</mat-option>
+      <mat-option *ngFor="let room of rooms" [value]="room.key">
+        {{ room.key }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="datePicker"
+      formControlName="date"
+      placeholder="MM/DD/YYYY"
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="lookupForm.invalid"
+  >
+    Lookup
+  </button>
+</form>

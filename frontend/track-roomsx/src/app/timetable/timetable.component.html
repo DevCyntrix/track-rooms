@@ -1,0 +1,11 @@
+<div class="timetable-container">
+    <div class="timetable-header">
+      <h1>{{ roomBookings.key }}</h1>
+    </div>
+    <ng-container *ngIf="isBrowser && calendarOptions">
+      <full-calendar
+        class="full-calendar"
+        [options]="calendarOptions"
+      ></full-calendar>
+    </ng-container>
+</div>  

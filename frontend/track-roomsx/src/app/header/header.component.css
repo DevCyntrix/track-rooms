@@ -1,0 +1,14 @@
+.header{
+    position: relative;
+    background-color: #c70606; ;
+    height: 10vh;
+    width: 100%;
+}
+
+.logo {
+    position: relative;
+    height: 6vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-left: 5vw;
+}

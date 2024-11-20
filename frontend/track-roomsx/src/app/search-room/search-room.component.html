@@ -1,0 +1,78 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Start Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startDatePicker"
+        formControlName="startDate"
+        placeholder="MM.DD.YYYY"
+        required
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Start Time</mat-label>
+      <input
+        matInput
+        type="time"
+        formControlName="startTime"
+        required
+      />
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>End Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endDatePicker"
+        formControlName="endDate"
+        placeholder="MM.DD.YYYY"
+        required
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="endDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>End Time</mat-label>
+      <input
+        matInput
+        type="time"
+        formControlName="endTime"
+        required
+      />
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Building</mat-label>
+      <mat-select formControlName="building" required>
+        <mat-option *ngFor="let building of buildings" [value]="building">
+          {{ building }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Floor</mat-label>
+      <mat-select formControlName="floor" required>
+        <mat-option *ngFor="let floor of floors" [value]="floor">
+          {{ floor }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="searchForm.invalid"
+    >Search</button>
+</form>

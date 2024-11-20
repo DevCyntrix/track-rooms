@@ -12,6 +12,8 @@ services:
       - '3000:3000'
     depends_on:
       - postgres
+    profiles:
+      - ${DISABLE_BACKEND:-}
 
   # In Docker
   # - TEST_POSTGRES_URI=postgres://user:password@postgres/
